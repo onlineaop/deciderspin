@@ -3,7 +3,18 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./DiceRoller.module.css";
 
-const DICE_FACES = ["", "⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
+// Pip layout per face value, drawn as real dots in a 3x3 grid instead of
+// relying on the Unicode dice-face glyphs (⚀-⚅) — those render as a solid
+// black square with white dots baked into the glyph itself in most fonts,
+// which looked like a black square sitting inside the white die.
+const PIP_LAYOUTS: Record<number, string[]> = {
+  1: ["c"],
+  2: ["tl", "br"],
+  3: ["tl", "c", "br"],
+  4: ["tl", "tr", "bl", "br"],
+  5: ["tl", "tr", "c", "bl", "br"],
+  6: ["tl", "tr", "ml", "mr", "bl", "br"],
+};
 const MAX_DICE = 4;
 const ROLL_DURATION_MS = 700;
 const STAGGER_MS = 90;
@@ -119,7 +130,11 @@ export default function DiceRoller() {
             }}
             className={styles.die}
           >
-            {DICE_FACES[values[i] ?? 1]}
+            <div className={styles.pipGrid}>
+              {PIP_LAYOUTS[values[i] ?? 1].map((pos) => (
+                <span key={pos} className={`${styles.pip} ${styles["pip-" + pos]}`} />
+              ))}
+            </div>
           </div>
         ))}
       </div>
