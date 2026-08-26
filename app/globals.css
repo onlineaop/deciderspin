@@ -40,12 +40,22 @@ body {
 }
 
 body {
+  /* Fixed to the viewport (not the document) so the gradient always looks
+     identical regardless of how tall a given page's content is. Without
+     background-attachment: fixed, the gradient stretches across the full
+     scrollable height, so its color stops land in different places on a
+     short page (e.g. Coin Flip) vs. a long one (e.g. Team Picker with a
+     full teams grid) — on long pages the diagonal angle pushes the pink
+     end of the gradient down into what should be solid indigo near the
+     footer. Pinning it to the viewport keeps every page's background
+     visually consistent. */
   background: linear-gradient(
     -225deg,
     var(--color-bg-1) 0%,
     var(--color-bg-2) 50%,
     var(--color-bg-3) 100%
   );
+  background-attachment: fixed;
   color: var(--color-text);
   min-height: 100vh;
 }
