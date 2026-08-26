@@ -434,7 +434,7 @@ export default function Wheel() {
           <div className={styles.resultCard}>
             <p className={styles.resultLabel}>The wheel has spoken</p>
             <p className={styles.resultText}>{result}</p>
-            <button onClick={() => setResult(null)}>Spin Again</button>
+            <button onClick={() => setResult(null)}>OK</button>
           </div>
         </div>
       )}
