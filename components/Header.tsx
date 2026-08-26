@@ -2,8 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 
 const NAV_LINKS = [
-  { label: "Spin the Wheel", href: "/" },
-  { label: "Magic 8 Ball", href: "/8ball/" },
+  { label: "Spin the Wheel", href: "/", icon: "🎡" },
+  { label: "Magic 8 Ball", href: "/8ball/", icon: "🎱" },
 ];
 
 function isActive(pathname: string | null, href: string): boolean {
@@ -26,18 +26,19 @@ export default function Header({ pathname }: { pathname: string | null }) {
             className="h-9 w-auto"
           />
         </Link>
-        <nav className="flex items-center gap-x-6 gap-y-2 text-sm flex-wrap">
+        <nav className="flex items-center gap-2 text-sm flex-wrap">
           {NAV_LINKS.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               className={
-                "font-semibold transition-opacity " +
+                "inline-flex items-center gap-2 px-4 py-2 rounded-full border font-semibold transition-colors " +
                 (isActive(pathname, item.href)
-                  ? "opacity-100 underline underline-offset-4"
-                  : "opacity-85 hover:opacity-100")
+                  ? "bg-white/15 border-white/35 opacity-100"
+                  : "bg-card border-card-border opacity-85 hover:opacity-100 hover:bg-white/10")
               }
             >
+              <span aria-hidden="true">{item.icon}</span>
               {item.label}
             </Link>
           ))}
