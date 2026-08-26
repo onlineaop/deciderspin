@@ -240,6 +240,7 @@
 .actionsRow {
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
 }
@@ -247,6 +248,12 @@
 .hint {
   color: var(--color-text-muted);
   font-size: 0.8rem;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .resetBtn {
@@ -257,11 +264,22 @@
   border-radius: 10px;
   cursor: pointer;
   font-size: 0.85rem;
+  white-space: nowrap;
 }
 
 .resetBtn:hover {
   color: #fff;
   border-color: rgba(255, 255, 255, 0.4);
+}
+
+.resetBtn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.resetBtn:disabled:hover {
+  color: var(--color-text-muted);
+  border-color: var(--color-card-border);
 }
 
 .resultOverlay {

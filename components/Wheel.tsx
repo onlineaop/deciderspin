@@ -36,7 +36,7 @@ export default function Wheel() {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed) && parsed.length >= 2) {
+        if (Array.isArray(parsed)) {
           setOptions(parsed);
         }
       }
@@ -128,7 +128,6 @@ export default function Wheel() {
   };
 
   const removeOption = (index: number) => {
-    if (options.length <= 2) return;
     const next = options.filter((_, i) => i !== index);
     setOptions(next);
     persist(next);
@@ -137,6 +136,11 @@ export default function Wheel() {
   const resetOptions = () => {
     setOptions(DEFAULTS);
     persist(DEFAULTS);
+  };
+
+  const deleteAllOptions = () => {
+    setOptions([]);
+    persist([]);
   };
 
   const spin = () => {
@@ -243,11 +247,20 @@ export default function Wheel() {
         <div className={styles.actionsRow}>
           <span className={styles.hint}>
             {options.length} {options.length === 1 ? "option" : "options"}
-            {options.length < 2 ? " — add at least 2" : ""}
+            {options.length < 2 ? " — add at least 2 to spin" : ""}
           </span>
-          <button className={styles.resetBtn} onClick={resetOptions}>
-            Reset to defaults
-          </button>
+          <div className={styles.actionButtons}>
+            <button
+              className={styles.resetBtn}
+              onClick={deleteAllOptions}
+              disabled={options.length === 0}
+            >
+              Delete all
+            </button>
+            <button className={styles.resetBtn} onClick={resetOptions}>
+              Reset to defaults
+            </button>
+          </div>
         </div>
       </div>
 
