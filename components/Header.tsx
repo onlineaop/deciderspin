@@ -4,6 +4,7 @@ import Image from "next/image";
 const NAV_LINKS = [
   { label: "Spin the Wheel", href: "/", icon: "🎡" },
   { label: "Magic 8 Ball", href: "/8ball/", icon: "🎱" },
+  { label: "Rock Paper Scissors", href: "/rock-paper-scissors/", icon: "✊" },
 ];
 
 function isActive(pathname: string | null, href: string): boolean {
