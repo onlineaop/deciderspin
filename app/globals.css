@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+:root {
+  /* --- Design tokens: DeciderSpin ---
+     Matches the site's real, already-established brand gradient (verified
+     from the live body background before this migration): hot pink through
+     magenta into deep indigo. Every page shares this as its base background
+     so header/footer/content never look like separate boxes. */
+  --color-bg-1: #ff057c;
+  --color-bg-2: #8d0b93;
+  --color-bg-3: #321575;
+
+  --color-text: #f4f1fb;
+  --color-text-muted: #f0d6ea;
+
+  --color-accent: #ff5da2;
+  --color-accent-2: #7c5cff;
+  --color-accent-3: #4fd6e0;
+
+  --color-card: rgba(255, 255, 255, 0.1);
+  --color-card-border: rgba(255, 255, 255, 0.22);
+}
+
+@theme inline {
+  --color-bg-1: var(--color-bg-1);
+  --color-bg-2: var(--color-bg-2);
+  --color-bg-3: var(--color-bg-3);
+  --color-text: var(--color-text);
+  --color-text-muted: var(--color-text-muted);
+  --color-accent: var(--color-accent);
+  --color-accent-2: var(--color-accent-2);
+  --color-accent-3: var(--color-accent-3);
+  --color-card: var(--color-card);
+  --color-card-border: var(--color-card-border);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: linear-gradient(
+    -225deg,
+    var(--color-bg-1) 0%,
+    var(--color-bg-2) 50%,
+    var(--color-bg-3) 100%
+  );
+  color: var(--color-text);
+  min-height: 100vh;
+}
