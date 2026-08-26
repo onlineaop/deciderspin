@@ -18,6 +18,59 @@ const COLORS = [
 const DEFAULTS = ["Yes", "No", "Maybe", "I don't know"];
 const STORAGE_KEY = "deciderspin_wheel_options";
 const SPIN_DURATION_MS = 5300;
+// Must match the canvas's CSS transition duration exactly (Wheel.module.css
+// .canvas { transition: transform 5.2s cubic-bezier(.17,.67,.1,1); }) so
+// the synthesized clicks land on the same instants the wheel visually
+// crosses each slice boundary, not just approximately.
+const SPIN_TRANSITION_SEC = 5.2;
+const EASE_P1X = 0.17;
+const EASE_P1Y = 0.67;
+const EASE_P2X = 0.1;
+const EASE_P2Y = 1;
+
+// Same "solve x for t, then evaluate y" approach browsers use internally
+// for CSS cubic-bezier() timing functions.
+function bezierA(a1: number, a2: number) {
+  return 1 - 3 * a2 + 3 * a1;
+}
+function bezierB(a1: number, a2: number) {
+  return 3 * a2 - 6 * a1;
+}
+function bezierC(a1: number) {
+  return 3 * a1;
+}
+function bezierValue(t: number, a1: number, a2: number) {
+  return ((bezierA(a1, a2) * t + bezierB(a1, a2)) * t + bezierC(a1)) * t;
+}
+function bezierSlope(t: number, a1: number, a2: number) {
+  return 3 * bezierA(a1, a2) * t * t + 2 * bezierB(a1, a2) * t + bezierC(a1);
+}
+function tForX(x: number) {
+  let t = x;
+  for (let i = 0; i < 8; i++) {
+    const slope = bezierSlope(t, EASE_P1X, EASE_P2X);
+    if (slope === 0) return t;
+    const currentX = bezierValue(t, EASE_P1X, EASE_P2X) - x;
+    t -= currentX / slope;
+  }
+  return t;
+}
+// progress (0-1, how far through the rotation) at time-fraction t (0-1)
+function easeProgress(t: number) {
+  return bezierValue(tForX(t), EASE_P1Y, EASE_P2Y);
+}
+// Inverse: at what time-fraction does the eased progress hit `target`?
+// easeProgress is monotonic here, so binary search is exact enough.
+function timeForProgress(target: number) {
+  let lo = 0;
+  let hi = 1;
+  for (let i = 0; i < 30; i++) {
+    const mid = (lo + hi) / 2;
+    if (easeProgress(mid) < target) lo = mid;
+    else hi = mid;
+  }
+  return (lo + hi) / 2;
+}
 
 export default function Wheel() {
   const [options, setOptions] = useState<string[]>(DEFAULTS);
@@ -29,6 +82,107 @@ export default function Wheel() {
   const rotationRef = useRef(0);
   const optionsRef = useRef(options);
   optionsRef.current = options;
+
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  const noiseBufferRef = useRef<AudioBuffer | null>(null);
+
+  // AudioContext must be created inside a user-gesture handler (the SPIN
+  // click) or browsers refuse to let it produce sound — lazily built once
+  // and reused for every future spin.
+  const ensureAudio = (): AudioContext | null => {
+    type WindowWithWebkitAudio = typeof window & {
+      webkitAudioContext?: typeof AudioContext;
+    };
+    const AudioCtx =
+      window.AudioContext ||
+      (window as WindowWithWebkitAudio).webkitAudioContext;
+    if (!AudioCtx) return null;
+
+    if (!audioCtxRef.current) {
+      const ctx = new AudioCtx();
+      audioCtxRef.current = ctx;
+      const length = Math.floor(ctx.sampleRate * 0.03);
+      const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < length; i++) {
+        data[i] = Math.random() * 2 - 1;
+      }
+      noiseBufferRef.current = buffer;
+    }
+    if (audioCtxRef.current.state === "suspended") {
+      audioCtxRef.current.resume().catch(() => {});
+    }
+    return audioCtxRef.current;
+  };
+
+  // The "clack" — a short filtered noise burst, like a plastic peg
+  // flicking past the pointer.
+  const playClick = (ctx: AudioContext, when: number, volume: number) => {
+    const buffer = noiseBufferRef.current;
+    if (!buffer) return;
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+
+    const filter = ctx.createBiquadFilter();
+    filter.type = "bandpass";
+    filter.frequency.value = 3000 + Math.random() * 600;
+    filter.Q.value = 1.1;
+
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(volume, when);
+    gain.gain.exponentialRampToValueAtTime(0.001, when + 0.035);
+
+    source.connect(filter);
+    filter.connect(gain);
+    gain.connect(ctx.destination);
+    source.start(when);
+    source.stop(when + 0.05);
+  };
+
+  // The soft "thunk" when the wheel settles on its result.
+  const playLanding = (ctx: AudioContext, when: number) => {
+    const osc = ctx.createOscillator();
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(180, when);
+    osc.frequency.exponentialRampToValueAtTime(90, when + 0.12);
+
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0.28, when);
+    gain.gain.exponentialRampToValueAtTime(0.001, when + 0.22);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(when);
+    osc.stop(when + 0.25);
+  };
+
+  // Schedules every slice-boundary click for this spin, timed against the
+  // exact same easing curve the CSS transform transition uses, so the
+  // audio and the visual wheel cross each boundary at the same instant.
+  const scheduleSpinSound = (
+    startRotationDeg: number,
+    endRotationDeg: number,
+    sliceDeg: number
+  ) => {
+    const ctx = ensureAudio();
+    if (!ctx) return;
+
+    const totalDeg = endRotationDeg - startRotationDeg;
+    const firstK = Math.ceil(startRotationDeg / sliceDeg + 1e-6);
+    const lastK = Math.floor(endRotationDeg / sliceDeg);
+    const baseTime = ctx.currentTime + 0.015;
+
+    for (let k = firstK; k <= lastK; k++) {
+      const progress = (k * sliceDeg - startRotationDeg) / totalDeg;
+      const t = timeForProgress(progress);
+      const when = baseTime + t * SPIN_TRANSITION_SEC;
+      // Softer as the wheel slows down near the end (t closer to 1).
+      const volume = 0.32 - 0.16 * t;
+      playClick(ctx, when, Math.max(volume, 0.08));
+    }
+
+    playLanding(ctx, baseTime + SPIN_TRANSITION_SEC);
+  };
 
   // Load persisted options after mount (avoids SSR/localStorage mismatch).
   useEffect(() => {
@@ -160,10 +314,12 @@ export default function Wheel() {
     const extraTurns = 6 + Math.floor(Math.random() * 3);
     const currentMod = ((rotationRef.current % 360) + 360) % 360;
     const delta = (targetMod - currentMod + 360) % 360;
-    const newRotation = rotationRef.current + extraTurns * 360 + delta;
+    const startRotation = rotationRef.current;
+    const newRotation = startRotation + extraTurns * 360 + delta;
 
     rotationRef.current = newRotation;
     canvas.style.transform = `rotate(${newRotation}deg)`;
+    scheduleSpinSound(startRotation, newRotation, slice);
 
     window.setTimeout(() => {
       setSpinning(false);
