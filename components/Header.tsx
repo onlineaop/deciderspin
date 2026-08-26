@@ -6,6 +6,10 @@ const NAV_LINKS = [
   { label: "Magic 8 Ball", href: "/8ball/", icon: "🎱" },
   { label: "Rock Paper Scissors", href: "/rock-paper-scissors/", icon: "✊" },
   { label: "Coin Flip", href: "/coin-flip/", icon: "🪙" },
+  { label: "Dice Roller", href: "/dice-roller/", icon: "🎲" },
+  { label: "Random Number", href: "/random-number/", icon: "🔢" },
+  { label: "Team Picker", href: "/team-picker/", icon: "👥" },
+  { label: "Would You Rather", href: "/would-you-rather/", icon: "🤔" },
 ];
 
 function isActive(pathname: string | null, href: string): boolean {

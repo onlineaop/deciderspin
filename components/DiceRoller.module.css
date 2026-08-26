@@ -1,0 +1,167 @@
+.app {
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 24px 16px 48px;
+}
+
+.title {
+  font-size: clamp(1.6rem, 5vw, 2.4rem);
+  margin: 4px 0 0;
+  text-align: center;
+  letter-spacing: -0.02em;
+  background: linear-gradient(90deg, #ffd479, #ff5da2 45%, #7c5cff 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+}
+
+.subtitle {
+  color: var(--color-text-muted);
+  margin: 0 0 4px;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.countRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.countLabel {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}
+
+.countButtons {
+  display: flex;
+  gap: 6px;
+}
+
+.countBtn {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: var(--color-card);
+  border: 1px solid var(--color-card-border);
+  color: var(--color-text);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.countBtn:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.countBtnActive {
+  background: linear-gradient(135deg, var(--color-accent-2), #5a3fe0);
+  border-color: transparent;
+}
+
+.diceTray {
+  width: 100%;
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 20px;
+  border-radius: 24px;
+  background: var(--color-card);
+  border: 1px solid var(--color-card-border);
+}
+
+.die {
+  width: 84px;
+  height: 84px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  background: linear-gradient(160deg, #ffffff, #e7e3f5);
+  box-shadow:
+    inset 0 -6px 10px rgba(0, 0, 0, 0.12),
+    0 14px 26px rgba(0, 0, 0, 0.35);
+  font-size: 3.4rem;
+  line-height: 1;
+  color: #2d1b4e;
+}
+
+.die.rolling {
+  animation: diceThrow 0.7s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+@keyframes diceThrow {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+  20% {
+    transform: translateY(-34px) rotate(140deg) scale(1.12);
+  }
+  45% {
+    transform: translateY(6px) rotate(300deg) scale(0.92);
+  }
+  70% {
+    transform: translateY(-10px) rotate(430deg) scale(1.06);
+  }
+  100% {
+    transform: translateY(0) rotate(540deg) scale(1);
+  }
+}
+
+.total {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.total span {
+  background: linear-gradient(90deg, #ffd479, #ff5da2, #c9bbff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 1.5rem;
+}
+
+.rollBtn {
+  background: linear-gradient(135deg, var(--color-accent-2), #5a3fe0);
+  border: none;
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+  transition:
+    transform 0.12s ease,
+    filter 0.12s ease;
+}
+
+.rollBtn:hover {
+  filter: brightness(1.08);
+}
+
+.rollBtn:active {
+  transform: scale(0.97);
+}
+
+.rollBtn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+@media (max-width: 400px) {
+  .die {
+    width: 70px;
+    height: 70px;
+    font-size: 2.8rem;
+  }
+}
