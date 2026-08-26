@@ -4,14 +4,6 @@ import { SITE_NAME, SITE_URL } from "@/lib/site";
 import SiteChrome from "@/components/SiteChrome";
 import "./globals.css";
 
-// Sitewide default for statically-generated pages. Next.js's own default
-// (no revalidate = effectively infinite, 1-year Cache-Control) assumes a
-// host that purges its cache on every deploy — Hostinger's doesn't. Without
-// this, a stale cached response can outlive any number of redeploys until
-// someone manually clears it in hPanel. 60s means every route self-heals
-// within a minute of any deploy, with zero manual steps, permanently.
-export const revalidate = 60;
-
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
 const DEFAULT_TITLE = "DeciderSpin — Spin the Wheel & Magic 8 Ball";

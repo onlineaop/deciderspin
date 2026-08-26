@@ -29,3 +29,11 @@ next-env.d.ts
 /wheel/
 /8ball/
 
+# deployment artifacts (static export output + the zip/tar built from it
+# to upload to the server) — regenerate with `npm run build` + make-zip.ps1,
+# never part of the repo itself
+/out/
+/deciderspin-export.zip
+/deciderspin-export.tar
+/make-zip.ps1
+
