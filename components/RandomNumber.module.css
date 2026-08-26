@@ -1,0 +1,129 @@
+.app {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 24px 16px 48px;
+}
+
+.title {
+  font-size: clamp(1.6rem, 5vw, 2.4rem);
+  margin: 4px 0 0;
+  text-align: center;
+  letter-spacing: -0.02em;
+  background: linear-gradient(90deg, #ffd479, #ff5da2 45%, #7c5cff 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+}
+
+.subtitle {
+  color: var(--color-text-muted);
+  margin: 0 0 4px;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.rangeRow {
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+}
+
+.field input {
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--color-card-border);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-text);
+  font-size: 1rem;
+  outline: none;
+  width: 100%;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+
+.field input:focus {
+  border-color: var(--color-accent-2);
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.rangeDash {
+  padding-bottom: 12px;
+  color: var(--color-text-muted);
+  font-weight: 700;
+}
+
+.error {
+  color: #ffb4c8;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.display {
+  width: 100%;
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 24px;
+  background: var(--color-card);
+  border: 1px solid var(--color-card-border);
+}
+
+.displayValue {
+  font-size: clamp(3rem, 16vw, 4.5rem);
+  font-weight: 800;
+  background: linear-gradient(90deg, #ffd479, #ff5da2, #c9bbff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.generateBtn {
+  background: linear-gradient(135deg, var(--color-accent-2), #5a3fe0);
+  border: none;
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+  transition:
+    transform 0.12s ease,
+    filter 0.12s ease;
+}
+
+.generateBtn:hover {
+  filter: brightness(1.08);
+}
+
+.generateBtn:active {
+  transform: scale(0.97);
+}
+
+.generateBtn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
