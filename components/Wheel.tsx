@@ -332,90 +332,92 @@ export default function Wheel() {
       <h1 className={styles.title}>Spin the Wheel</h1>
       <p className={styles.subtitle}>Add your options and let fate decide.</p>
 
-      <div className={styles.wheelWrap}>
-        <svg
-          className={styles.pointer}
-          viewBox="0 0 44 52"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M22 52 L2 14 A22 22 0 0 1 42 14 Z"
-            fill="#ffffff"
-            stroke="#00000022"
-            strokeWidth="1"
+      <div className={styles.layout}>
+        <div className={styles.wheelWrap}>
+          <svg
+            className={styles.pointer}
+            viewBox="0 0 44 52"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M22 52 L2 14 A22 22 0 0 1 42 14 Z"
+              fill="#ffffff"
+              stroke="#00000022"
+              strokeWidth="1"
+            />
+          </svg>
+          <div className={styles.wheelRing} />
+          <canvas
+            ref={canvasRef}
+            className={styles.canvas}
+            width={600}
+            height={600}
           />
-        </svg>
-        <div className={styles.wheelRing} />
-        <canvas
-          ref={canvasRef}
-          className={styles.canvas}
-          width={600}
-          height={600}
-        />
-        <button
-          className={styles.hub}
-          onClick={spin}
-          disabled={spinning || options.length < 2}
-        >
-          {spinning ? "…" : "SPIN"}
-        </button>
-      </div>
-
-      <div className={styles.panel}>
-        <div className={styles.addRow}>
-          <input
-            type="text"
-            maxLength={30}
-            placeholder="Add an option…"
-            autoComplete="off"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                addOption();
-              }
-            }}
-          />
-          <button aria-label="Add option" onClick={addOption}>
-            +
+          <button
+            className={styles.hub}
+            onClick={spin}
+            disabled={spinning || options.length < 2}
+          >
+            {spinning ? "…" : "SPIN"}
           </button>
         </div>
 
-        <div className={styles.optionsList}>
-          {options.map((opt, i) => (
-            <div className={styles.chip} key={`${opt}-${i}`}>
-              <div
-                className={styles.swatch}
-                style={{ background: COLORS[i % COLORS.length] }}
-              />
-              <span>{opt}</span>
+        <div className={styles.panel}>
+          <div className={styles.addRow}>
+            <input
+              type="text"
+              maxLength={30}
+              placeholder="Add an option…"
+              autoComplete="off"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  addOption();
+                }
+              }}
+            />
+            <button aria-label="Add option" onClick={addOption}>
+              +
+            </button>
+          </div>
+
+          <div className={styles.optionsList}>
+            {options.map((opt, i) => (
+              <div className={styles.chip} key={`${opt}-${i}`}>
+                <div
+                  className={styles.swatch}
+                  style={{ background: COLORS[i % COLORS.length] }}
+                />
+                <span>{opt}</span>
+                <button
+                  aria-label={`Remove ${opt}`}
+                  onClick={() => removeOption(i)}
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+          </div>
+
+          <div className={styles.actionsRow}>
+            <span className={styles.hint}>
+              {options.length} {options.length === 1 ? "option" : "options"}
+              {options.length < 2 ? " — add at least 2 to spin" : ""}
+            </span>
+            <div className={styles.actionButtons}>
               <button
-                aria-label={`Remove ${opt}`}
-                onClick={() => removeOption(i)}
+                className={styles.resetBtn}
+                onClick={deleteAllOptions}
+                disabled={options.length === 0}
               >
-                ✕
+                Delete all
+              </button>
+              <button className={styles.resetBtn} onClick={resetOptions}>
+                Reset to defaults
               </button>
             </div>
-          ))}
-        </div>
-
-        <div className={styles.actionsRow}>
-          <span className={styles.hint}>
-            {options.length} {options.length === 1 ? "option" : "options"}
-            {options.length < 2 ? " — add at least 2 to spin" : ""}
-          </span>
-          <div className={styles.actionButtons}>
-            <button
-              className={styles.resetBtn}
-              onClick={deleteAllOptions}
-              disabled={options.length === 0}
-            >
-              Delete all
-            </button>
-            <button className={styles.resetBtn} onClick={resetOptions}>
-              Reset to defaults
-            </button>
           </div>
         </div>
       </div>

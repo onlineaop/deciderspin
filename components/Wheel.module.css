@@ -9,6 +9,31 @@
   padding: 24px 16px 48px;
 }
 
+/* On mobile the wheel and the options panel stack — this is that stack.
+   On wide viewports there's a lot of idle screen space beside the wheel,
+   so it switches to a side-by-side row instead. */
+.layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  width: 100%;
+}
+
+@media (min-width: 860px) {
+  .app {
+    max-width: 900px;
+  }
+
+  .layout {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 36px;
+    width: auto;
+  }
+}
+
 .title {
   font-size: clamp(1.6rem, 5vw, 2.4rem);
   margin: 4px 0 0;
@@ -132,6 +157,19 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+@media (min-width: 860px) {
+  .panel {
+    width: 340px;
+    flex: 0 0 340px;
+    margin-top: 6px;
+    align-self: stretch;
+  }
+
+  .optionsList {
+    max-height: 280px;
+  }
 }
 
 .addRow {
