@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import styles from "./RockPaperScissors.module.css";
 
 type ChoiceId = "rock" | "paper" | "scissors";
@@ -180,10 +179,6 @@ export default function RockPaperScissors() {
           </button>
         ))}
       </div>
-
-      <Link className={styles.crosslink} href="/">
-        🎡 Still can&apos;t decide? Spin the wheel for answers!
-      </Link>
 
       {result !== null && playerChoice !== null && computerChoice !== null && (
         <div

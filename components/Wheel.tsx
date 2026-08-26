@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import styles from "./Wheel.module.css";
 
 const COLORS = [
@@ -421,10 +420,6 @@ export default function Wheel() {
           </div>
         </div>
       </div>
-
-      <Link className={styles.crosslink} href="/8ball/">
-        🎱 Need a second opinion? Try the Magic 8 Ball!
-      </Link>
 
       {result !== null && (
         <div

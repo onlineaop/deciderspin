@@ -184,30 +184,6 @@
   font-weight: 700;
 }
 
-.crosslink {
-  display: block;
-  text-align: center;
-  text-decoration: none;
-  color: #fff;
-  font-size: 0.9rem;
-  font-weight: 600;
-  padding: 12px 18px;
-  border-radius: 14px;
-  background: rgba(0, 0, 0, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  transition:
-    filter 0.15s ease,
-    transform 0.12s ease;
-}
-
-.crosslink:hover {
-  filter: brightness(1.15);
-}
-
-.crosslink:active {
-  transform: scale(0.98);
-}
-
 .resultOverlay {
   position: fixed;
   inset: 0;

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import styles from "./CoinFlip.module.css";
 
 const FLIP_DURATION_MS = 1100;
@@ -129,10 +128,6 @@ export default function CoinFlip() {
       <button className={styles.flipBtn} onClick={flip} disabled={flipping}>
         {flipping ? "Flipping…" : "Flip the Coin"}
       </button>
-
-      <Link className={styles.crosslink} href="/">
-        🎡 Still can&apos;t decide? Spin the wheel for answers!
-      </Link>
 
       {result !== null && (
         <div

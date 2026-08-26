@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import styles from "./EightBall.module.css";
 
 const ANSWERS = [
@@ -177,10 +176,6 @@ export default function EightBall() {
           </button>
         )}
       </div>
-
-      <Link className={styles.crosslink} href="/">
-        🎡 Still can&apos;t decide? Spin the wheel for answers!
-      </Link>
     </div>
   );
 }
