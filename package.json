@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "node scripts/copy-og-image.mjs",
     "lint": "eslint"
   },
   "dependencies": {

@@ -7,6 +7,7 @@ const DEFAULT_NAMES: string[] = [];
 const NAMES_KEY = "deciderspin_team_names";
 const TEAM_COUNT_KEY = "deciderspin_team_count";
 const MAX_TEAMS = 6;
+const MAX_NAMES = 60;
 
 function shuffled<T>(arr: T[]): T[] {
   const copy = [...arr];
@@ -52,7 +53,8 @@ export default function TeamPicker() {
   const addName = () => {
     const val = inputValue.trim();
     if (!val) return;
-    if (names.length >= 60) {
+    if (names.length >= MAX_NAMES) {
+      setError(`You've reached the ${MAX_NAMES}-name limit.`);
       setInputValue("");
       return;
     }
@@ -60,6 +62,7 @@ export default function TeamPicker() {
     setNames(next);
     persistNames(next);
     setInputValue("");
+    setError(null);
     setTeams(null);
   };
 
@@ -67,12 +70,14 @@ export default function TeamPicker() {
     const next = names.filter((_, i) => i !== index);
     setNames(next);
     persistNames(next);
+    setError(null);
     setTeams(null);
   };
 
   const deleteAllNames = () => {
     setNames([]);
     persistNames([]);
+    setError(null);
     setTeams(null);
   };
 

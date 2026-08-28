@@ -37,3 +37,9 @@ next-env.d.ts
 /deciderspin-export.tar
 /make-zip.ps1
 
+# generated deploy zip/manifest (rebuild with scripts/gen-manifest.mjs +
+# scripts/make-deploy-zip.mjs) and a one-off relay scratch file — not source
+/scripts/deploy.zip
+/scripts/deploy-manifest.json
+/scripts/deploy-helper.html
+

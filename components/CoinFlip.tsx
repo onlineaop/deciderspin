@@ -2,6 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import styles from "./CoinFlip.module.css";
+import { playCoinFlipSound } from "@/lib/coinSound";
+
+const FACE_IMAGE: Record<Face, string> = {
+  heads: "/coin-heads.png",
+  tails: "/coin-tails.png",
+};
 
 const FLIP_DURATION_MS = 1100;
 const SCORE_KEY = "deciderspin_coin_score";
@@ -53,6 +59,7 @@ export default function CoinFlip() {
 
     setFlipping(true);
     setResult(null);
+    playCoinFlipSound();
 
     const outcome: Face = Math.random() < 0.5 ? "heads" : "tails";
     const extraTurns = 5 + Math.floor(Math.random() * 3); // 5-7 full spins
@@ -119,9 +126,24 @@ export default function CoinFlip() {
           role="button"
           aria-label="Flip the coin"
         >
-          <span className={styles.coinLetter}>
-            {displayFace === "heads" ? "H" : "T"}
-          </span>
+          {/* eslint-disable-next-line @next/next/no-img-element -- static
+              export with images.unoptimized, plain img is the norm here */}
+          <img
+            src={FACE_IMAGE[displayFace]}
+            alt=""
+            // The coin lands tails-up at rotateY(180deg) (see `flip` below),
+            // which shows the *back* of this 2D plane — the browser mirrors
+            // it, so the art (and its "TAILS" text) would read backwards.
+            // Counter-mirror only this rendering of the image so the two
+            // flips cancel out; the result-card image below has no 3D
+            // rotation on it, so it uses the asset unmirrored.
+            className={
+              displayFace === "tails"
+                ? `${styles.coinFace} ${styles.coinFaceMirrored}`
+                : styles.coinFace
+            }
+            draggable={false}
+          />
         </div>
       </div>
 
@@ -138,6 +160,15 @@ export default function CoinFlip() {
         >
           <div className={styles.resultCard}>
             <p className={styles.resultLabel}>The coin has spoken</p>
+            {result !== null && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={FACE_IMAGE[result]}
+                alt=""
+                className={styles.resultFace}
+                draggable={false}
+              />
+            )}
             <p className={styles.resultText}>
               {result === "heads" ? "Heads!" : "Tails!"}
             </p>

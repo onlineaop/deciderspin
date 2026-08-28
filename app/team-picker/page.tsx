@@ -1,13 +1,12 @@
-import type { Metadata } from "next";
-import { absoluteUrl } from "@/lib/site";
+import { buildMetadata } from "@/lib/site";
 import TeamPicker from "@/components/TeamPicker";
 
-export const metadata: Metadata = {
+export const metadata = buildMetadata({
   title: "Team Picker — DeciderSpin",
   description:
     "Split a list of names into fair random teams. Add everyone, pick a number of teams, and shuffle instantly.",
-  alternates: { canonical: absoluteUrl("/team-picker/") },
-};
+  path: "/team-picker/",
+});
 
 export default function TeamPickerPage() {
   return <TeamPicker />;

@@ -1,13 +1,12 @@
-import type { Metadata } from "next";
-import { absoluteUrl } from "@/lib/site";
+import { buildMetadata } from "@/lib/site";
 import CoinFlip from "@/components/CoinFlip";
 
-export const metadata: Metadata = {
+export const metadata = buildMetadata({
   title: "Coin Flip — DeciderSpin",
   description:
     "Flip a coin online. Heads or tails — tap to flip and let DeciderSpin decide instantly.",
-  alternates: { canonical: absoluteUrl("/coin-flip/") },
-};
+  path: "/coin-flip/",
+});
 
 export default function CoinFlipPage() {
   return <CoinFlip />;

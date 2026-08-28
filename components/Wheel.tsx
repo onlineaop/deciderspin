@@ -16,6 +16,7 @@ const COLORS = [
 
 const DEFAULTS = ["Yes", "No", "Maybe", "I don't know"];
 const STORAGE_KEY = "deciderspin_wheel_options";
+const MAX_OPTIONS = 24;
 const SPIN_DURATION_MS = 5300;
 // Must match the canvas's CSS transition duration exactly (Wheel.module.css
 // .canvas { transition: transform 5.2s cubic-bezier(.17,.67,.1,1); }) so
@@ -76,6 +77,7 @@ export default function Wheel() {
   const [inputValue, setInputValue] = useState("");
   const [spinning, setSpinning] = useState(false);
   const [result, setResult] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rotationRef = useRef(0);
@@ -270,7 +272,8 @@ export default function Wheel() {
   const addOption = () => {
     const val = inputValue.trim();
     if (!val) return;
-    if (options.length >= 24) {
+    if (options.length >= MAX_OPTIONS) {
+      setError(`You've reached the ${MAX_OPTIONS}-option limit.`);
       setInputValue("");
       return;
     }
@@ -278,22 +281,26 @@ export default function Wheel() {
     setOptions(next);
     persist(next);
     setInputValue("");
+    setError(null);
   };
 
   const removeOption = (index: number) => {
     const next = options.filter((_, i) => i !== index);
     setOptions(next);
     persist(next);
+    setError(null);
   };
 
   const resetOptions = () => {
     setOptions(DEFAULTS);
     persist(DEFAULTS);
+    setError(null);
   };
 
   const deleteAllOptions = () => {
     setOptions([]);
     persist([]);
+    setError(null);
   };
 
   const spin = () => {
@@ -381,6 +388,8 @@ export default function Wheel() {
               +
             </button>
           </div>
+
+          {error && <p className={styles.error}>{error}</p>}
 
           <div className={styles.optionsList}>
             {options.map((opt, i) => (

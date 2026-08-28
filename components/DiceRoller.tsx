@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import styles from "./DiceRoller.module.css";
+import { playDiceRollSound } from "@/lib/diceSound";
 
 // Pip layout per face value, drawn as real dots in a 3x3 grid instead of
 // relying on the Unicode dice-face glyphs (⚀-⚅) — those render as a solid
@@ -65,6 +66,7 @@ export default function DiceRoller() {
   const roll = () => {
     if (rolling) return;
     setRolling(true);
+    playDiceRollSound(diceCount);
 
     const newValues = Array.from({ length: diceCount }, randomFace);
 

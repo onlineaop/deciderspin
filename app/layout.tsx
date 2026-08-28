@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { SITE_NAME, SITE_URL } from "@/lib/site";
+import { SITE_NAME, SITE_URL, absoluteUrl } from "@/lib/site";
 import SiteChrome from "@/components/SiteChrome";
 import "./globals.css";
 
@@ -32,11 +32,20 @@ export const metadata: Metadata = {
     url: SITE_URL,
     type: "website",
     locale: "en_US",
+    images: [
+      {
+        url: absoluteUrl("/og-image.png"),
+        width: 1200,
+        height: 630,
+        alt: DEFAULT_TITLE,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: DEFAULT_TITLE,
     description: DEFAULT_DESCRIPTION,
+    images: [absoluteUrl("/og-image.png")],
   },
 };
 

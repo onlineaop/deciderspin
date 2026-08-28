@@ -15,6 +15,15 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
+  // Deploys go live via a manual file-by-file transfer to shared hosting
+  // (no CI, no full-directory sync), so a fresh random build ID on every
+  // `next build` — Next's default — silently changes the embedded RSC
+  // payload on every single page even when that page's own code didn't
+  // change, which in turn changes every page's byte content and requires
+  // re-deploying pages that have nothing to do with the actual edit. Pin
+  // it to a fixed value so only routes whose own code actually changed
+  // produce different output.
+  generateBuildId: () => "2x7sHzE6PL55ZyIvAhWpF",
 };
 
 export default nextConfig;

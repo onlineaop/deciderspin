@@ -224,6 +224,12 @@
   transform: scale(0.94);
 }
 
+.error {
+  color: #ffb4c8;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
 .optionsList {
   display: flex;
   flex-wrap: wrap;

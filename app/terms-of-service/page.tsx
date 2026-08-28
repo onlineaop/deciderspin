@@ -1,11 +1,10 @@
-import type { Metadata } from "next";
-import { absoluteUrl } from "@/lib/site";
+import { buildMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata = buildMetadata({
   title: "Terms of Service — DeciderSpin",
   description: "The terms of use for DeciderSpin.",
-  alternates: { canonical: absoluteUrl("/terms-of-service/") },
-};
+  path: "/terms-of-service/",
+});
 
 export default function TermsOfServicePage() {
   return (

@@ -1,12 +1,11 @@
-import type { Metadata } from "next";
-import { absoluteUrl } from "@/lib/site";
+import { buildMetadata } from "@/lib/site";
 import ContactForm from "@/components/ContactForm";
 
-export const metadata: Metadata = {
+export const metadata = buildMetadata({
   title: "Contact Us — DeciderSpin",
   description: "Get in touch with the DeciderSpin team.",
-  alternates: { canonical: absoluteUrl("/contact/") },
-};
+  path: "/contact/",
+});
 
 export default function ContactPage() {
   return (

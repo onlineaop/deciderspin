@@ -1,11 +1,10 @@
-import type { Metadata } from "next";
-import { absoluteUrl } from "@/lib/site";
+import { buildMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata = buildMetadata({
   title: "Privacy Policy — DeciderSpin",
   description: "How DeciderSpin collects and uses information.",
-  alternates: { canonical: absoluteUrl("/privacy-policy/") },
-};
+  path: "/privacy-policy/",
+});
 
 export default function PrivacyPolicyPage() {
   return (
