@@ -4,7 +4,7 @@ import RandomNumber from "@/components/RandomNumber";
 export const metadata = buildMetadata({
   title: "Random Number Generator — DeciderSpin",
   description:
-    "Generate a random number in any range. Set a min and max and let DeciderSpin pick instantly.",
+    "Generate a random number in any range. Set a min and max and pick instantly — great for random challenges in games like Jet Lag: The Game.",
   path: "/random-number/",
 });
 
